@@ -1,0 +1,576 @@
+/* styles/main.css - Main styles for the Love2D Editor Suite */
+
+/* Base styles */
+:root {
+    /* Unity-like color scheme */
+    --bg-dark: #1e1e1e;
+    --bg-medium: #2d2d2d;
+    --bg-light: #383838;
+    --bg-highlight: #3e3e3e;
+    
+    --text-primary: #dcdcdc;
+    --text-secondary: #a0a0a0;
+    --text-disabled: #707070;
+    
+    --border-color: #222222;
+    --border-highlight: #4d4d4d;
+    
+    --accent-color: #0f80c0;
+    --accent-hover: #1a90d0;
+    --accent-active: #0f6090;
+    
+    --error-color: #e53935;
+    --warning-color: #ffa000;
+    --success-color: #43a047;
+    
+    /* UI dimensions */
+    --menu-height: 25px;
+    --toolbar-height: 40px;
+    --status-height: 25px;
+    --panel-header-height: 28px;
+    --panel-controls-width: 75px;
+    
+    /* Fonts */
+    --font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    --font-code: 'Cascadia Code', 'Consolas', 'Source Code Pro', monospace;
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: var(--font-family);
+    font-size: 14px;
+    color: var(--text-primary);
+    background-color: var(--bg-dark);
+    overflow: hidden;
+    user-select: none;
+  }
+  
+  /* Main app container */
+  #app-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Menu bar */
+  .menu-bar {
+    height: var(--menu-height);
+    background-color: var(--bg-medium);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    z-index: 100;
+  }
+  
+  .menu-item {
+    position: relative;
+    padding: 0 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .menu-item:hover {
+    background-color: var(--bg-highlight);
+  }
+  
+  .menu-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 200px;
+    background-color: var(--bg-medium);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 101;
+    display: none;
+  }
+  
+  .menu-dropdown.visible {
+    display: block;
+  }
+  
+  .menu-entry {
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .menu-entry:hover {
+    background-color: var(--bg-highlight);
+  }
+  
+  .menu-separator {
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 5px 0;
+  }
+  
+  .menu-shortcut {
+    color: var(--text-secondary);
+    margin-left: 20px;
+  }
+  
+  .menu-entry.checkable {
+    position: relative;
+    padding-left: 24px;
+  }
+  
+  .menu-entry.checkable::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--text-secondary);
+  }
+  
+  .menu-entry.checkable.checked::before {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+  }
+  
+  .menu-entry.checkable.checked::after {
+    content: "✓";
+    position: absolute;
+    left: 11px;
+    top: 4px;
+    color: var(--text-primary);
+    font-size: 10px;
+  }
+  
+  /* Toolbar */
+  .toolbar {
+    height: var(--toolbar-height);
+    background-color: var(--bg-medium);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    z-index: 90;
+  }
+  
+  .toolbar-button {
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    width: 32px;
+    height: 32px;
+    margin-right: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .toolbar-button:hover {
+    background-color: var(--bg-highlight);
+  }
+  
+  .toolbar-button.active {
+    background-color: var(--accent-color);
+  }
+  
+  .toolbar-separator {
+    width: 1px;
+    height: 24px;
+    background-color: var(--border-color);
+    margin: 0 10px;
+  }
+  
+  /* Main container */
+  .main-container {
+    flex: 1;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+  }
+  
+  /* Region containers */
+  .left-container, 
+  .right-container, 
+  .top-container, 
+  .bottom-container, 
+  .center-container {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .left-container {
+    width: 250px;
+    border-right: 1px solid var(--border-color);
+  }
+  
+  .right-container {
+    width: 300px;
+    border-left: 1px solid var(--border-color);
+  }
+  
+  .top-container {
+    height: 200px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .bottom-container {
+    height: 250px;
+    border-top: 1px solid var(--border-color);
+  }
+  
+  .center-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Panel containers */
+  .panel-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--bg-medium);
+  }
+  
+  .panel-container.left, 
+  .panel-container.right {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .panel-container.top, 
+  .panel-container.bottom {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .panel-container.center {
+    flex: 1;
+    height: 100%;
+  }
+  
+  .panel-header {
+    height: var(--panel-header-height);
+    background-color: var(--bg-dark);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    cursor: default;
+  }
+  
+  .panel-title {
+    flex: 1;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .panel-controls {
+    display: flex;
+    align-items: center;
+  }
+  
+  .panel-button {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .panel-button:hover {
+    color: var(--text-primary);
+  }
+  
+  .panel-content {
+    flex: 1;
+    overflow: auto;
+    position: relative;
+  }
+  
+  /* Resize handles */
+  .resize-handle {
+    position: absolute;
+    z-index: 95;
+  }
+  
+  .resize-handle.left {
+    top: 0;
+    right: 0;
+    width: 5px;
+    height: 100%;
+    cursor: ew-resize;
+  }
+  
+  .resize-handle.right {
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    cursor: ew-resize;
+  }
+  
+  .resize-handle.top {
+    bottom: 0;
+    left: 0;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: var(--bg-dark);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--bg-light);
+    border-radius: 6px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--bg-highlight);
+  }
+  
+  /* Input Styles */
+  input, 
+  textarea, 
+  select {
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 5px 8px;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+  
+  input:focus, 
+  textarea:focus, 
+  select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 5px rgba(15, 128, 192, 0.3);
+  }
+  
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-highlight);
+    cursor: pointer;
+  }
+  
+  input[type="checkbox"]:checked,
+  input[type="radio"]:checked {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+  }
+  
+  /* Buttons */
+  .button {
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+  
+  .button:hover {
+    background-color: var(--bg-highlight);
+    border-color: var(--border-highlight);
+  }
+  
+  .button.primary {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+  }
+  
+  .button.primary:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+  
+  .button.danger {
+    background-color: var(--error-color);
+    border-color: var(--error-color);
+    color: white;
+  }
+  
+  .button.danger:hover {
+    background-color: color-mix(in srgb, var(--error-color) 80%, white);
+    border-color: color-mix(in srgb, var(--error-color) 80%, white);
+  }
+  
+  /* Tabs */
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .tab {
+    padding: 8px 12px;
+    cursor: pointer;
+    background-color: var(--bg-medium);
+    border-right: 1px solid var(--border-color);
+    color: var(--text-secondary);
+  }
+  
+  .tab:hover {
+    background-color: var(--bg-highlight);
+  }
+  
+  .tab.active {
+    background-color: var(--accent-color);
+    color: white;
+  }
+  
+  /* Modal/Dialog */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: var(--bg-medium);
+    border: 1px solid var(--border-color);
+    width: 500px;
+    max-height: 80%;
+    overflow: auto;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .modal-header {
+    background-color: var(--bg-dark);
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-body {
+    padding: 15px;
+  }
+  
+  .modal-footer {
+    background-color: var(--bg-light);
+    padding: 10px 15px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  
+  /* Tooltips */
+  .tooltip {
+    position: relative;
+  }
+  
+  .tooltip-text {
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /* Context Menu */
+  .context-menu {
+    position: fixed;
+    background-color: var(--bg-medium);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    min-width: 200px;
+  }
+  
+  .context-menu-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .context-menu-item:hover {
+    background-color: var(--bg-highlight);
+  }
+  
+  .context-menu-item.disabled {
+    color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+  
+  /* Drag and Drop */
+  .drag-over {
+    border: 2px dashed var(--accent-color);
+    background-color: rgba(15, 128, 192, 0.1);
+  }
+  
+  /* Status Bar */
+  .status-bar {
+    height: var(--status-height);
+    background-color: var(--bg-dark);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+  
+  .status-bar-item {
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .status-bar-item.warning {
+    color: var(--warning-color);
+  }
+  
+  .status-bar-item.error {
+    color: var(--error-color);
+  }

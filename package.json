@@ -1,0 +1,21 @@
+{
+    "name": "love2d-editor",
+    "version": "0.1.0",
+    "description": "A game development editor for Love2D",
+    "main": "app.js",
+    "scripts": {
+      "start": "electron .",
+      "dev": "electron . --enable-logging"
+    },
+    "keywords": [
+      "love2d",
+      "game development",
+      "editor"
+    ],
+    "author": "Your Name",
+    "license": "MIT",
+    "dependencies": {
+      "electron": "^29.3.1",
+      "fs-extra": "^10.1.0"
+    }
+  }
